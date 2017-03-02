@@ -1,0 +1,68 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+allprojects {
+    apply from: 'https://pixeloutlaw.github.io/gradle-scripts/license.gradle'
+    apply from: 'https://pixeloutlaw.github.io/gradle-scripts/io.pixeloutlaw.spigot.common-plugins.gradle'
+    apply from: "$rootDir/kotlin.gradle"
+
+    group = 'io.pixeloutlaw.spigot'
+    version = '0.0.1-SNAPSHOT'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    repositories {
+        mavenLocal()
+
+        maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
+    }
+}
+
+subprojects {
+    dependencies {
+        compile group: 'org.spigotmc', name: 'spigot-api', version: '1.11.2-R0.1-SNAPSHOT'
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+        compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+        compile group: 'com.google.inject.extensions', name: 'guice-assistedinject', version: '4.1.0'
+        testCompile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.1'
+        testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
+        testRuntime group: 'cglib', name: 'cglib-nodep', version: '3.1'
+        testRuntime group: 'org.objenesis', name: 'objenesis', version: '2.1'
+    }
+
+    sourceSets {
+        // Creates a templates SourceSet in order to allow templates to be filtered
+        templates {
+            output.classesDir = "$buildDir/templates"
+        }
+        main {
+            // Adds the output of the templates SourceSet to the Java sources of the main SourceSet
+            java.srcDir(sourceSets.templates.output.classesDir)
+        }
+    }
+
+    processResources {
+        filter ReplaceTokens, tokens: [
+                VERSION : version + "-" + (System.getenv("BUILD_NUMBER") ?: "0"),
+                NAME    : System.getenv("JOB_NAME") ?: project.name,
+                ARTIFACT: project.name.toLowerCase(),
+                LEVEL   : System.getenv("BUILD_NUMBER") != null ? 'info' : 'debug'
+        ]
+    }
+
+    // Processes the Java templates and outputs them for the compiler to pick up
+    task processTemplates(type: Copy) {
+        from sourceSets.templates.java
+        into sourceSets.templates.output.classesDir
+        filter ReplaceTokens, tokens: [
+                VERSION : version + "+" + (System.getenv("BUILD_NUMBER") ?: "0"),
+                NAME    : System.getenv("JOB_NAME") ?: project.name,
+                ARTIFACT: project.name.toLowerCase()
+        ]
+    }
+    compileJava.dependsOn processTemplates
+}

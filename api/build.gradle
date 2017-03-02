@@ -1,0 +1,4 @@
+description = 'SpoilsOfWar_API'
+dependencies {
+    compile project(':io.pixeloutlaw.spigot.common')
+}
