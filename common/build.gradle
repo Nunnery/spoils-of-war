@@ -1,4 +1,4 @@
 description = 'SpoilsOfWar_Common'
 dependencies {
-
+    compile group: 'ninja.leaping.configurate', name: 'configurate-hocon', version: '3.1'
 }
