@@ -1,8 +1,8 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 allprojects {
-    apply from: 'https://pixeloutlaw.github.io/gradle-scripts/license.gradle'
-    apply from: 'https://pixeloutlaw.github.io/gradle-scripts/io.pixeloutlaw.spigot.common-plugins.gradle'
+    apply from: 'https://raw.githubusercontent.com/PixelOutlaw/gradle-scripts/master/src/main/resources/license.gradle'
+    apply from: 'https://raw.githubusercontent.com/PixelOutlaw/gradle-scripts/master/src/main/resources/common-plugins.gradle'
     apply from: "$rootDir/kotlin.gradle"
 
     group = 'io.pixeloutlaw.spigot'

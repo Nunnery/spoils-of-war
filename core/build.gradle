@@ -1,4 +1,4 @@
-apply from: 'https://pixeloutlaw.github.io/gradle-scripts/shadow.gradle'
+apply from: 'https://raw.githubusercontent.com/PixelOutlaw/gradle-scripts/master/src/main/resources/shadow.gradle'
 
 description = 'SpoilsOfWar_Core'
 dependencies {

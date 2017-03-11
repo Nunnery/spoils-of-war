@@ -1,8 +1,8 @@
 rootProject.name = 'spoils-of-war'
-include ':io.pixeloutlaw.spigot.common'
+include ':common'
 include ':api'
 include ':core'
 
-project(':io.pixeloutlaw.spigot.common').projectDir = "$rootDir/io.pixeloutlaw.spigot.common" as File
+project(':common').projectDir = "$rootDir/common" as File
 project(':api').projectDir = "$rootDir/api" as File
 project(':core').projectDir = "$rootDir/core" as File
