@@ -20,6 +20,19 @@ allprojects {
 
         maven { url 'https://hub.spigotmc.org/nexus/content/groups/public' }
     }
+
+    publishing {
+        repositories {
+            maven {
+                url "https://artifactory.pixeloutlaw.io/artifactory/maven-${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases'}/"
+                name "PixelOutlaw"
+                credentials {
+                    username System.getenv("ARTIFACTORY_USERNAME") ?: project.properties['artifactory_username']
+                    password System.getenv("ARTIFACTORY_PASSWORD") ?: project.properties['artifactory_password']
+                }
+            }
+        }
+    }
 }
 
 subprojects {
